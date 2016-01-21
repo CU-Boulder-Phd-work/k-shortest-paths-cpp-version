@@ -15,55 +15,52 @@
 
 using namespace std;
 
-class DijkstraShortestPathAlg
-{
+class DijkstraShortestPathAlg {
 private: // members
 
-	Graph* m_pDirectGraph;
+    Graph *m_pDirectGraph;
 
-	std::map<BaseVertex*, double> m_mpStartDistanceIndex; 
-	std::map<BaseVertex*, BaseVertex*> m_mpPredecessorVertex; 
+    std::map<BaseVertex *, double> m_mpStartDistanceIndex;
+    std::map<BaseVertex *, BaseVertex *> m_mpPredecessorVertex;
 
-	std::set<int> m_stDeterminedVertices;
-	
-	std::multiset<BaseVertex*, WeightLess<BaseVertex> > m_quCandidateVertices;
-	
+    std::set<int> m_stDeterminedVertices;
+
+    std::multiset<BaseVertex *, WeightLess<BaseVertex> > m_quCandidateVertices;
+
 public:
-	DijkstraShortestPathAlg(Graph* pGraph):m_pDirectGraph(pGraph){}
-	~DijkstraShortestPathAlg(void){clear();}
+    DijkstraShortestPathAlg(Graph *pGraph) : m_pDirectGraph(pGraph) { }
 
-	void clear();
+    ~DijkstraShortestPathAlg(void) { clear(); }
 
-	BasePath* get_shortest_path(BaseVertex* source, BaseVertex* sink);
+    void clear();
 
-	void set_predecessor_vertex(BaseVertex* vt1, BaseVertex* vt2)
-	{
-		m_mpPredecessorVertex[vt1] = vt2;
-	}
+    BasePath *get_shortest_path(BaseVertex *source, BaseVertex *sink);
 
-	double get_start_distance_at(BaseVertex* vertex)
-	{
-		return m_mpStartDistanceIndex.find(vertex)->second;
-	}
+    void set_predecessor_vertex(BaseVertex *vt1, BaseVertex *vt2) {
+        m_mpPredecessorVertex[vt1] = vt2;
+    }
 
-	void set_start_distance_at(BaseVertex* vertex, double weight)
-	{
-		m_mpStartDistanceIndex[vertex] = weight;
-	}
+    double get_start_distance_at(BaseVertex *vertex) {
+        return m_mpStartDistanceIndex.find(vertex)->second;
+    }
 
-	void get_shortest_path_flower(BaseVertex* root)
-	{
-		determine_shortest_paths(NULL, root, false);
-	}
+    void set_start_distance_at(BaseVertex *vertex, double weight) {
+        m_mpStartDistanceIndex[vertex] = weight;
+    }
 
-	// The following two methods are prepared for the top-k shortest paths algorithm
-	BasePath* update_cost_forward(BaseVertex* vertex);
-	void correct_cost_backward(BaseVertex* vertex);
+    void get_shortest_path_flower(BaseVertex *root) {
+        determine_shortest_paths(NULL, root, false);
+    }
+
+    // The following two methods are prepared for the top-k shortest paths algorithm
+    BasePath *update_cost_forward(BaseVertex *vertex);
+
+    void correct_cost_backward(BaseVertex *vertex);
 
 protected:
 
-	void determine_shortest_paths(BaseVertex* source, BaseVertex* sink, bool is_source2sink);
+    void determine_shortest_paths(BaseVertex *source, BaseVertex *sink, bool is_source2sink);
 
-	void improve2vertex(BaseVertex* cur_vertex_pt, bool is_source2sink);
+    void improve2vertex(BaseVertex *cur_vertex_pt, bool is_source2sink);
 
 };
